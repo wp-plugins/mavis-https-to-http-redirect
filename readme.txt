@@ -40,8 +40,15 @@ To instal this plugin, follow these steps:
 
 == Frequently Asked Questions ==
 
-Please do not be afraid of asking questions?
-(There are no stupid or dumb questions!)
+= Do I need to add any code to my template file, post or pages? =
+
+No. You just specify a unique tag from the permalink of page or parent page that 
+will use a secured session.
+
+= Do I need to use permalinks? =
+
+Recommended for better matching.
+
 
 == Screenshots ==
 
