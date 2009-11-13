@@ -33,7 +33,7 @@ To instal this plugin, follow these steps:
 
 1. Download the plugin mavis.zip
 2. Extract the single file mavis.php
-3. Upload `mavis.php` to the `/wp-content/plugins/` directory
+3. Upload to the `/wp-content/plugins/` directory
 4. Activate the plugin through the 'Plugins' menu in WordPress
 5. Change your site to use pretty permalinks from the 'Permalinks' menu in WordPress
 6. Set your secured page on the Mavis HTTPS/HTTP Redirection admin page from the 'Settings' menu in Wordpress
@@ -45,7 +45,7 @@ Please do not be afraid of asking questions?
 
 == Screenshots ==
 
-/screenshot-1.png
+screenshot-1.png
 
 == Changelog ==
 
