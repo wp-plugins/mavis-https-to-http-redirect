@@ -46,7 +46,7 @@ Please do not be afraid of asking questions?
 
 == Screenshots ==
 
-/tags/1.0/screenshot-1.png
+/screenshot-1.png
 
 == Changelog ==
 
