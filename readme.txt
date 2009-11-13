@@ -14,16 +14,17 @@ a non-secured page (or page that you need to have as non-secured---possibly beca
 external links, etc.)
 
 For example, a user comes to your wordpress e-commerce site, locates an item, then navigates to your
-secured checkout page. Now the customer, realizes there is something else they need, and instead of clickin
-a Continue Shopping link, then click a top category link. Since the customer is in a secured session, wordpress
-put the secured protocol on all the links including that category. Now the customer navigates to that
-category, but they are still in a secured page session. Now this category page is displaying properly because
-of some external links that did not translate properly into the secured session. Customer is now upset, thinking
-that the site design demonstrates the level of incompetence of the shop owner and questions the shop owner's 
-integrity to fulfill the customer's order, so the customer in a behavior of discuss, rapidly leaves the
+secured checkout page. Now the customer, realizes there is something else they need, and instead of clicking
+the Continue Shopping link, they click another category link. Since the customer is in a secured session, wordpress
+attached the secured protocol on all the links including that category link the customer is now clicking. 
+The customer then navigates to that category page, but they are viewing the page in a secured session. 
+This category page is not displaying the elements properly because some external links did not translate 
+into the secured session. The customer is now upset, thinking that the site design demonstrates the 
+level of incompetence of the shop owner and questions the shop owner's 
+integrity to fulfill their order, so the customer in a behavior of discuss, rapidly leaves the
 shop owner's site and that customer becomes a non-customer!
 
-This plugin resolves this issue by redirecting all non specified checkout (or other secured pages)
+This plugin resolves this issue by redirecting all non-specified secured (or other secured pages)
 back to a non-secured page counterpart.
 
 
