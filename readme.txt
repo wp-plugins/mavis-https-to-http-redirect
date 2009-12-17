@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: https-to-http, https, http, redirection, mavis
 Requires at least: 2.8.6
 Tested up to: 2.8.6
-Stable tag: 1.2
+Stable tag: 1.3
 
 Provides page redirection back to non-secured pages (https: to http:)
 
@@ -48,6 +48,8 @@ Please do not be afraid of asking questions?<br>
 
 
 == Changelog ==
+= 1.3 =
+* Filtered code from NOT being executed during an admin session. Apparently, one user reported that it does?
 
 = 1.2 =
 * Added support for multiple secured page checking

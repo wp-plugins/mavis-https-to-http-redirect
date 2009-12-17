@@ -3,7 +3,7 @@
 Plugin Name: Mavis HTTPS to HTTP Redirection
 Plugin URI: http://www.phkcorp.com?do=wordpress
 Description: Forcing the redirect to non-secure session when secured session is active
-Version: 1.2
+Version: 1.3
 Author: PHK Corporation
 Author URI: http://www.phkcorp.com
 */
@@ -45,11 +45,14 @@ function addMavisSettingsTable ()
 {
 	global $wpdb;
 
-	$query = "CREATE TABLE IF NOT EXISTS `wp_mavis_settings` (
+	if (is_admin()) {
+
+		$query = "CREATE TABLE IF NOT EXISTS `wp_mavis_settings` (
   				`page` varchar(255) NOT NULL)
 				ENGINE=MyISAM DEFAULT CHARSET=latin1;";
 
-	$wpdb->query($query);
+		$wpdb->query($query);
+	} // endif of is_admin()
 }
 
 //// Add page to options menu.
@@ -64,25 +67,26 @@ function displayMavisManagementPage()
 {
 	global $wpdb;
 
-	// Create the tables, if they do not exist?
-	addMavisSettingsTable();
+	if (is_admin()) {
+		// Create the tables, if they do not exist?
+		addMavisSettingsTable();
 
-	if (isset($_POST['mavis_update']))
-	{
-		//check_admin_referer();
+		if (isset($_POST['mavis_update']))
+		{
+			//check_admin_referer();
 
-		$securedPage = $_POST['secured_page_tag'];
-		if ($securedPage == '') $securedPage = 'checkout,confirm-order';
+			$securedPage = $_POST['secured_page_tag'];
+			if ($securedPage == '') $securedPage = 'checkout,confirm-order';
 
-		$wpdb->query("TRUNCATE TABLE wp_mavis_settings");
-		$wpdb->query("insert into wp_mavis_settings (page) values ('".$securedPage."')");
+			$wpdb->query("TRUNCATE TABLE wp_mavis_settings");
+			$wpdb->query("insert into wp_mavis_settings (page) values ('".$securedPage."')");
 
-		// echo message updated
-		echo "<div class='updated fade'><p>Mavis HTTPS-to-HTTP Redirection settings have been updated.</p></div>";
-	}
+			// echo message updated
+			echo "<div class='updated fade'><p>Mavis HTTPS-to-HTTP Redirection settings have been updated.</p></div>";
+		}
 
-	$t = $wpdb->get_col("select page from wp_mavis_settings");
-	$securedPage = $t[0];
+		$t = $wpdb->get_col("select page from wp_mavis_settings");
+		$securedPage = $t[0];
 
 ?>
 		<div class="wrap">
@@ -180,55 +184,58 @@ if ($_SERVER['HTTPS'] == "on") {<br>
 </p>
 				</fieldset>
 <?
+	} // endif of is_admin()
 }
 
 function mavis_redirect() {
 	global $wpdb;
 
-	$match=0;
+	if (!is_admin()) {
+		$match=0;
 
-	if ($_SERVER['HTTPS'] == "on") {
-    	$url = "http://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-		$t = $wpdb->get_col("select page from wp_mavis_settings");
-		$ay = explode(",",$t[0]);
-		for ($i=0; $i<count($ay); $i++) {
-			$sp = "/".$ay[$i]."/";
-			if (preg_match($sp, $url) == true) {
-			   $match = 1;
+		if ($_SERVER['HTTPS'] == "on") {
+    		$url = "http://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+			$t = $wpdb->get_col("select page from wp_mavis_settings");
+			$ay = explode(",",$t[0]);
+			for ($i=0; $i<count($ay); $i++) {
+				$sp = "/".$ay[$i]."/";
+				if (preg_match($sp, $url) == true) {
+				   $match = 1;
+				}
 			}
-		}
 
-		if ($match == 0) {
+			if ($match == 0) {
 				header("Location: $url");
 				exit;
-		}
+			}
 
 
-		//Original Code:
-		//-------------
-		//$sp = "/".$t[0]."/";
-		//if (preg_match($sp, $url) == false) {
-		//	header("Location: $url");
-		//	exit;
-		//}
+			//Original Code:
+			//-------------
+			//$sp = "/".$t[0]."/";
+			//if (preg_match($sp, $url) == false) {
+			//	header("Location: $url");
+			//	exit;
+			//}
 
-	} else {
-    	$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-		$t = $wpdb->get_col("select page from wp_mavis_settings");
-		$ay = explode(",",$t[0]);
-		for ($i=0; $i<count($ay); $i++) {
-			$sp = "/".$ay[$i]."/";
-			if (preg_match($sp, $url) == true) {
-				$match = 1;
+		} else {
+    		$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+			$t = $wpdb->get_col("select page from wp_mavis_settings");
+			$ay = explode(",",$t[0]);
+			for ($i=0; $i<count($ay); $i++) {
+				$sp = "/".$ay[$i]."/";
+				if (preg_match($sp, $url) == true) {
+					$match = 1;
+				}
+			}
+
+			if ($match == 1) {
+   				$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+				header("Location: $url");
+				exit;
 			}
 		}
-
-		if ($match == 1) {
-   			$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-			header("Location: $url");
-			exit;
-		}
-	}
+	} // endif of !is_admin()
 }
 
 //
