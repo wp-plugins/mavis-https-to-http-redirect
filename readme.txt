@@ -57,3 +57,11 @@ Please do not be afraid of asking questions?<br>
 
 = 1.0 =
 * Created
+
+== Upgrade Notice ==
+
+= 1.3 =
+Apparently the redirection is executed during an admin session as a user had reported. The change includes a filter to prevent the plugin from redirecting during an admin session
+
+= 1.2 =
+Adds support for permitting more than one secured page to be checked. This is a user-requested feature, as the user reported that certain ecommerce plugins had a second secured page that was getting redirected back to an unsecured session.
