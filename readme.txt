@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== Mavis HTTPS to HTTP Redirection ===
 Contributors: phkcorp2005
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9674139
 Tags: https-to-http, https, http, redirection, mavis
