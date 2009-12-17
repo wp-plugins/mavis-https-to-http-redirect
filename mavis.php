@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Mavis HTTPS to HTTP Redirection
-Plugin URI: http://www.phkcorp.com/mavis
+Plugin URI: http://www.phkcorp.com?do=wordpress
 Description: Forcing the redirect to non-secure session when secured session is active
-Version: 1.0
+Version: 1.2
 Author: PHK Corporation
 Author URI: http://www.phkcorp.com
 */
@@ -46,33 +46,33 @@ function addMavisSettingsTable ()
 	global $wpdb;
 
 	$query = "CREATE TABLE IF NOT EXISTS `wp_mavis_settings` (
-  				`page` varchar(255) NOT NULL) 
+  				`page` varchar(255) NOT NULL)
 				ENGINE=MyISAM DEFAULT CHARSET=latin1;";
-	
+
 	$wpdb->query($query);
 }
 
 //// Add page to options menu.
-function addMavisToManagementPage() 
+function addMavisToManagementPage()
 {
     // Add a new submenu under Options:
     add_options_page('Mavis HTTPS/HTTP Redirection', 'Mavis HTTPS/HTTP Redirection', 8, 'mavis', 'displayMavisManagementPage');
 }
 
 // Display the admin page.
-function displayMavisManagementPage() 
+function displayMavisManagementPage()
 {
 	global $wpdb;
 
 	// Create the tables, if they do not exist?
 	addMavisSettingsTable();
 
-	if (isset($_POST['mavis_update'])) 
+	if (isset($_POST['mavis_update']))
 	{
 		//check_admin_referer();
 
 		$securedPage = $_POST['secured_page_tag'];
-		if ($securedPage == '') $securedPage = 'checkout';
+		if ($securedPage == '') $securedPage = 'checkout,confirm-order';
 
 		$wpdb->query("TRUNCATE TABLE wp_mavis_settings");
 		$wpdb->query("insert into wp_mavis_settings (page) values ('".$securedPage."')");
@@ -81,13 +81,13 @@ function displayMavisManagementPage()
 		echo "<div class='updated fade'><p>Mavis HTTPS-to-HTTP Redirection settings have been updated.</p></div>";
 	}
 
-	$t = $wpdb->get_col("select page from wp_mavis_settings"); 
+	$t = $wpdb->get_col("select page from wp_mavis_settings");
 	$securedPage = $t[0];
 
 ?>
 		<div class="wrap">
 			<h2>Mavis HTTPS-to-HTTP Redirection</h2>
-			
+
 			<form method="post">
 				<fieldset class='options'>
 					<legend><h2><u>Settings</u></h2></legend>
@@ -97,8 +97,9 @@ function displayMavisManagementPage()
 								Secured Page Permalink tag:
 							</th>
 							<td>
-								<input type='text' size='16' maxlength='30' name='secured_page_tag' id='secured_page_tag' value='<?=$securedPage;?>' />
-								Used by PHP preg_match function.
+								<input type='text' size='30' maxlength='80' name='secured_page_tag' id='secured_page_tag' value='<?=$securedPage;?>' />
+								<br>Used by PHP preg_match function.<br>
+								<i>Separate multiple page names with comma's</i>
 							</td>
 						</tr>
 						<tr>
@@ -111,7 +112,7 @@ function displayMavisManagementPage()
 			</form>
 				<fieldset class='options'>
 					<legend><h2><u>Tips &amp; Techniques</u></h2></legend>
-								<p>The secured page entry is the permalink tag [a unique identified] of your 
+								<p>The secured page entry is the permalink tag [a unique identified] of your
 secured page. That is, this page(s) containing this tag within the URL, will be the only page that will retain
 it's secured page status.</p>
 <p>Any other page that has the secured session reference within the URL (https:) will then be redirected to the
@@ -140,13 +141,39 @@ of existing plugins, migration of HTML/PSD/Smarty themes to wordpress-compliant 
 <p>
 <code>
 global $wpdb;<br>
+<br>
+$match=0;<br>
+<br>
 if ($_SERVER['HTTPS'] == "on") {<br>
 &nbsp;&nbsp;$url = "http://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];<br>
 &nbsp;&nbsp;$t = $wpdb->get_col("select page from wp_mavis_settings"); <br>
-&nbsp;&nbsp;$sp = "/".$t[0]."/";<br>
-&nbsp;&nbsp;if (preg_match($sp, $url) == false) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;header("Location: $url");<br>
-&nbsp;&nbsp;&nbsp;&nbsp;exit;<br>
+&nbsp;&nbsp;$ay = explode(",",$t[0]);<br>
+&nbsp;&nbsp;for ($i=0; $i<count($ay); $i++) {<br>
+&nbsp;&nbsp;&nbsp;$sp = "/".$ay[$i]."/";<br>
+&nbsp;&nbsp;&nbsp;if (preg_match($sp, $url) == true) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;$match = 1;<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;if ($match == 0) {<br>
+&nbsp;&nbsp;&nbsp;header("Location: $url");<br>
+&nbsp;&nbsp;&nbsp;exit;<br>
+&nbsp;&nbsp;}<br>
+} else {<br>
+&nbsp;&nbsp;$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];<br>
+&nbsp;&nbsp;$t = $wpdb->get_col("select page from wp_mavis_settings"); <br>
+&nbsp;&nbsp;$ay = explode(",",$t[0]);<br>
+&nbsp;&nbsp;for ($i=0; $i<count($ay); $i++) {<br>
+&nbsp;&nbsp;&nbsp;$sp = "/".$ay[$i]."/";<br>
+&nbsp;&nbsp;&nbsp;if (preg_match($sp, $url) == true) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;$match = 1;<br>
+&nbsp;&nbsp;&nbsp;}<br>
+&nbsp;&nbsp;}<br>
+<br>
+&nbsp;&nbsp;if ($match == 1) {<br><br>
+&nbsp;&nbsp;&nbsp;$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];<br>
+&nbsp;&nbsp;&nbsp;header("Location: $url");<br>
+&nbsp;&nbsp;&nbsp;exit;<br>
 &nbsp;&nbsp;}<br>
 }<br>
 </code>
@@ -158,11 +185,46 @@ if ($_SERVER['HTTPS'] == "on") {<br>
 function mavis_redirect() {
 	global $wpdb;
 
+	$match=0;
+
 	if ($_SERVER['HTTPS'] == "on") {
     	$url = "http://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-		$t = $wpdb->get_col("select page from wp_mavis_settings"); 
-		$sp = "/".$t[0]."/";
-		if (preg_match($sp, $url) == false) {
+		$t = $wpdb->get_col("select page from wp_mavis_settings");
+		$ay = explode(",",$t[0]);
+		for ($i=0; $i<count($ay); $i++) {
+			$sp = "/".$ay[$i]."/";
+			if (preg_match($sp, $url) == true) {
+			   $match = 1;
+			}
+		}
+
+		if ($match == 0) {
+				header("Location: $url");
+				exit;
+		}
+
+
+		//Original Code:
+		//-------------
+		//$sp = "/".$t[0]."/";
+		//if (preg_match($sp, $url) == false) {
+		//	header("Location: $url");
+		//	exit;
+		//}
+
+	} else {
+    	$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+		$t = $wpdb->get_col("select page from wp_mavis_settings");
+		$ay = explode(",",$t[0]);
+		for ($i=0; $i<count($ay); $i++) {
+			$sp = "/".$ay[$i]."/";
+			if (preg_match($sp, $url) == true) {
+				$match = 1;
+			}
+		}
+
+		if ($match == 1) {
+   			$url = "https://". $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 			header("Location: $url");
 			exit;
 		}
