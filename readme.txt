@@ -34,10 +34,10 @@ To instal this plugin, follow these steps:
 
 1. Download the plugin mavis.zip
 2. Extract the single file mavis.php
-3. Upload `mavis.php` to the `/wp-content/plugins/` directory
-4. Activate the plugin through the 'Plugins' menu in WordPress
+3. Extract mavis plugin to the `/wp-content/plugins/` directory as new directory will be created identified as 'mavis-https-to-http-redirect'
+4. Activate the plugin through the 'Plugins' menu in WordPress, identified by 'Mavis HTTPS to HTTP Redirection'
 5. Change your site to use pretty permalinks from the 'Permalinks' menu in WordPress
-6. Set your secured page on the Mavis HTTPS/HTTP Redirection admin page from the 'Settings' menu in Wordpress
+6. Set your secured page on the 'Mavis HTTPS/HTTP Redirection' admin page from the 'Settings' menu in Wordpress
 7. If you have more than one secured page, separate each page name using commas (e.g. checkout,confirm)
 
 == Frequently Asked Questions ==
