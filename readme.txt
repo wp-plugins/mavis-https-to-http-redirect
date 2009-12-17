@@ -65,3 +65,11 @@ Apparently the redirection is executed during an admin session as a user had rep
 
 = 1.2 =
 Adds support for permitting more than one secured page to be checked. This is a user-requested feature, as the user reported that certain ecommerce plugins had a second secured page that was getting redirected back to an unsecured session.
+
+== Credits ==
+
+When you make questions, comments or requests, and they are incorporated into the next upgrade, you will be given honorable mention here with your Name, Email and URL (small one-liner plug allowed)
+
+== Contact ==
+
+Please contact phkcorp2005@gmail.com or visit www.phkcorp.com?do=wordpress with questions, comments, or requests.
