@@ -55,3 +55,8 @@ Please do not be afraid of asking questions?<br>
 
 = 1.0 =
 * Created
+
+== Upgrade Notice ==
+
+= 1.1 =
+Adds support for permitting more than one secured page to be checked. This is a user-requested feature, as the user reported that certain ecommerce plugins had a second secured page that was getting redirected back to an unsecured session.
