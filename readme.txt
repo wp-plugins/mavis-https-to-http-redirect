@@ -51,7 +51,7 @@ Please do not be afraid of asking questions?<br>
 = 1.3 =
 * Filtered code from NOT being executed during an admin session. Apparently, one user reported that it does?
 
-= 1.1 =
+= 1.2 =
 * Added support for multiple secured page checking
 * Forced redirect of secure page tags back to a secured page session if session is unsecured
 
