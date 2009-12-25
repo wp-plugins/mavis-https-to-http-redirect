@@ -2,9 +2,9 @@
 Contributors: phkcorp2005
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9674139
 Tags: https-to-http, https, http, redirection, mavis
-Requires at least: 2.8.6
-Tested up to: 2.8.6
-Stable tag: 1.3
+Requires at least: 2.9
+Tested up to: 2.9
+Stable tag: 1.4
 
 Provides page redirection back to non-secured pages (https: to http:)
 
@@ -48,6 +48,9 @@ Please do not be afraid of asking questions?<br>
 
 
 == Changelog ==
+= 1.4 =
+* Fix a bug that prevented plugin from being activated when php short definition is not defined.
+
 = 1.3 =
 * Filtered code from NOT being executed during an admin session. Apparently, one user reported that it does?
 
@@ -59,6 +62,8 @@ Please do not be afraid of asking questions?<br>
 * Created
 
 == Upgrade Notice ==
+= 1.4 =
+If your server has not enabled short php definitions, then you must upgrade to this version
 
 = 1.3 =
 Apparently the redirection is executed during an admin session as a user had reported. The change includes a filter to prevent the plugin from redirecting during an admin session
@@ -68,7 +73,7 @@ Adds support for permitting more than one secured page to be checked. This is a 
 
 == Credits ==
 
-When you make questions, comments or requests, and they are incorporated into the next upgrade, you will be given honorable mention here with your Name, Email and URL (small one-liner plug allowed)
+We make honorable mention to anyone who helps make Mavis HTTPS to HTTP Redirect a better plugin!
 
 == Contact ==
 
