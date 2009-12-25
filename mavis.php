@@ -3,7 +3,7 @@
 Plugin Name: Mavis HTTPS to HTTP Redirection
 Plugin URI: http://www.phkcorp.com?do=wordpress
 Description: Forcing the redirect to non-secure session when secured session is active
-Version: 1.4
+Version: 1.4.1
 Author: PHK Corporation
 Author URI: http://www.phkcorp.com
 */
@@ -101,7 +101,7 @@ function displayMavisManagementPage()
 								Secured Page Permalink tag:
 							</th>
 							<td>
-								<input type='text' size='30' maxlength='80' name='secured_page_tag' id='secured_page_tag' value='<?=$securedPage;?>' />
+								<input type='text' size='30' maxlength='80' name='secured_page_tag' id='secured_page_tag' value='<?php echo $securedPage;?>' />
 								<br>Used by PHP preg_match function.<br>
 								<i>Separate multiple page names with comma's</i>
 							</td>
